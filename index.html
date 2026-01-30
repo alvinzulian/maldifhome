@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maldif Home - Kos Nyaman & Strategis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --primary-color: #0f172a;
+            --accent-color: #2563eb;
+            --secondary-color: #f8fafc;
+            --text-dark: #334155;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --success: #22c55e;
+        }
+
+        html { scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding-top: 80px;
+        }
+
+        a { text-decoration: none; }
+        ul { list-style: none; }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- NAVIGATION BAR --- */
+        nav {
+            background-color: var(--primary-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo img { height: 40px; width: auto; }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a {
+            color: #cbd5e1;
+            font-weight: 600;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+        .nav-links a:hover { color: var(--white); }
+
+        .btn-nav-wa {
+            background-color: var(--success);
+            color: var(--white);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .btn-nav-wa:hover {
+            background-color: transparent;
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        /* --- UTILS --- */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+        }
+        .btn-primary { background-color: var(--accent-color); color: var(--white); }
+        .btn-primary:hover { background-color: #1d4ed8; }
+
+        .btn-wa {
+            background-color: var(--success);
+            color: var(--white);
+            width: 100%;
+        }
+        .btn-wa:hover { background-color: #16a34a; }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: var(--primary-color);
+        }
+
+        /* --- HERO --- */
+        .hero {
+            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            padding: 100px 0;
+            text-align: center;
+        }
+        .hero h1 { font-size: 3rem; margin-bottom: 10px; }
+        .hero p { font-size: 1.1rem; opacity: 0.9; max-width: 700px; margin: 0 auto; }
+
+        /* --- ABOUT --- */
+        .about { padding: 60px 0; background: var(--white); }
+        .about-content { text-align: center; max-width: 800px; margin: 0 auto; }
+        .highlight-badge {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        /* --- ROOMS SECTION --- */
+        .rooms { padding: 60px 0; }
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 30px;
+        }
+        .room-card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .room-card:hover { transform: translateY(-5px); }
+        
+        .room-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .price-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: rgba(15, 23, 42, 0.85);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        
+        .room-details { 
+            padding: 25px; 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        .room-details h3 { color: var(--primary-color); margin-bottom: 15px; }
+        
+        .room-specs { 
+            list-style: none; 
+            margin-bottom: 25px; 
+            font-size: 0.9rem; 
+            color: var(--text-light);
+            flex-grow: 1;
+        }
+        .room-specs li { 
+            margin-bottom: 8px; 
+            padding-bottom: 5px; 
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+        }
+        .room-specs li::before {
+            content: "✓"; 
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+
+        .room-details .btn-wa {
+            margin-top: auto;
+        }
+
+        /* --- FACILITIES --- */
+        .facilities { padding: 60px 0; background: var(--white); }
+        .facilities-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+        .facility-item { 
+            text-align: center; 
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+        .facility-img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .facility-item h4 { font-size: 1.1rem; color: var(--primary-color); margin-bottom: 8px; font-weight: 600; }
+        .facility-desc { font-size: 0.85rem; color: var(--text-light); line-height: 1.4; }
+
+        /* --- CONTACT (SPLIT LAYOUT) --- */
+        .contact { padding: 60px 0; text-align: center; }
+        
+        .contact-split-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: stretch;
+            margin-top: 40px;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+            background-color: #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            /* PENTING: Menjadi acuan posisi tombol */
+            position: relative; 
+        }
+
+        /* PENTING: Style untuk Tombol di atas Peta */
+        .btn-map-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%); /* Agar pas di tengah */
+            z-index: 20; /* Agar di atas peta */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 2px solid #fff; /* Agar lebih kontras */
+        }
+
+        .cta-box {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #020617;
+            color: #94a3b8;
+            padding: 50px 0 20px;
+            font-size: 0.9rem;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+        .footer-col h3 { color: var(--white); margin-bottom: 20px; font-size: 1.2rem; }
+        .footer-col p { margin-bottom: 10px; }
+        .copyright {
+            border-top: 1px solid #1e293b;
+            padding-top: 20px;
+            text-align: center;
+        }
+        .copyright a {
+            color: var(--success);
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .copyright a:hover {
+            color: var(--white);
+            text-decoration: underline;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 992px) {
+            .facilities-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .rooms-grid { grid-template-columns: 1fr; }
+            .facilities-grid { grid-template-columns: 1fr; } 
+            .hero h1 { font-size: 2rem; }
+
+            .contact-split-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .map-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container nav-container">
+            <div class="logo">
+                <img src="https://cdn-icons-png.flaticon.com/512/619/619153.png" alt="Logo Maldif Home">
+                Maldif Home
+            </div>
+            
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="#home">Beranda</a></li>
+                    <li><a href="#about">Tentang</a></li>
+                    <li><a href="#rooms">Tipe Kamar</a></li>
+                    <li><a href="#facilities">Fasilitas</a></li>
+                    <li><a href="#contact">Lokasi</a></li>
+                </ul>
+                <a href="https://wa.me/6282285513028?text=Halo%20Kak.%20Saya%20Mau%20Tanya%20Seputar%20Kos%20Maldif%20dong?" 
+                   class="btn-nav-wa" target="_blank">
+                   Hubungi Kami
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero" id="home">
+        <div class="container">
+            <h1>Maldif Home</h1>
+            <p>Jl bangau sakti. Jl mawar Gg.Putri RT 3 RW 4 Kel Simpang Baru Kecamatan Tampan</p>
+        </div>
+    </header>
+
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="highlight-badge">Khusus Laki-laki • Lokasi Strategis</div>
+                <h2 class="section-title">Tentang Maldif Home</h2>
+                <p>
+                    Maldif Home merupakan Kos-kosan yang mengutamakan kenyamanan, kemanan dan pelayanan terbaik. 
+                    Kos-kosan ini terletak di lokasi yang sangat strategis dikarenakan sangat dekat dengan pusat perbelanjaan, 
+                    kampus UNRI, UIN, SMK Farmasi dan STIFAR.
+                </p>
+                <br>
+                <p>
+                    Kos ini menyediakan fasilitas, WiFi, token pribadi, satu set kasur, lemari, wc dalam, dapur umum 
+                    dan sudah full keramik, area parkir yang luas serta lingkungan yang bersih dan nyaman untuk dipandang.
+                </p>
+
+                <div style="margin-top: 30px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                    <a href="https://wa.me/6282285513028?text=Halo%20Kak.%20Saya%20Mau%20Tanya%20Seputar%20Kos%20Maldif%20dong?" 
+                       class="btn btn-wa" 
+                       style="width: auto; margin-top: 0;">
+                       Hubungi Kami 💬
+                    </a>
+                    <a href="#contact" 
+                       class="btn btn-primary">
+                       Lihat Lokasi 📍
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="rooms" id="rooms">
+        <div class="container">
+            <h2 class="section-title">Pilihan Tipe Kamar</h2>
+            <div class="rooms-grid">
+                
+                <div class="room-card">
+                    <div class="price-tag">Rp 800.000 / bln</div>
+                    <img src="https://images.unsplash.com/photo-1631049552057-403cdb8f0658?q=80&w=600&auto=format&fit=crop" alt="Kamar Standar Non AC" class="room-img">
+                    <div class="room-details">
+                        <h3>Tipe 1: Standar Non AC</h3>
+                        <ul class="room-specs">
+                            <li>Luas: 4 x 3 Meter</li>
+                            <li>WC Dalam & Lemari Tanam</li>
+                            <li>Kasur 90x200cm</li>
+                            <li>Full Keramik & Token Pribadi</li>
+                            <li>WiFi & Air Bersih Gratis</li>
+                        </ul>
+                        <a href="https://wa.me/6282285513028?text=Halo,%20saya%20tertarik%20Kamar%20Tipe%201" class="btn btn-wa">Booking / Tanya Kamar</a>
+                    </div>
+                </div>
+
+                <div class="room-card">
+                    <div class="price-tag">Rp 1.100.000 / bln</div>
+                    <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?q=80&w=600&auto=format&fit=crop" alt="Kamar Standar AC" class="room-img">
+                    <div class="room-details">
+                        <h3>Tipe 2: Standar AC</h3>
+                        <ul class="room-specs">
+                            <li>Luas: 4 x 3 Meter</li>
+                            <li><strong>AC 1 PK</strong></li>
+                            <li>WC Dalam & Lemari Tanam</li>
+                            <li>Kasur 90x200cm</li>
+                            <li>Full Keramik & Token Pribadi</li>
+                            <li>WiFi & Air Bersih Gratis</li>
+                        </ul>
+                        <a href="https://wa.me/6282285513028?text=Halo,%20saya%20tertarik%20Kamar%20Tipe%202" class="btn btn-wa">Booking / Tanya Kamar</a>
+                    </div>
+                </div>
+
+                <div class="room-card">
+                    <div class="price-tag">Rp 1.000.000 / bln</div>
+                    <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?q=80&w=600&auto=format&fit=crop" alt="Kamar Deluxe Non AC" class="room-img">
+                    <div class="room-details">
+                        <h3>Tipe 3: Deluxe Non AC</h3>
+                        <ul class="room-specs">
+                            <li>Luas: <strong>5 x 4 Meter</strong></li>
+                            <li>WC Dalam & Lemari Tanam</li>
+                            <li>Kasur 90x200cm</li>
+                            <li>Full Keramik & Token Pribadi</li>
+                            <li>WiFi & Air Bersih Gratis</li>
+                        </ul>
+                        <a href="https://wa.me/6282285513028?text=Halo,%20saya%20tertarik%20Kamar%20Tipe%203" class="btn btn-wa">Booking / Tanya Kamar</a>
+                    </div>
+                </div>
+
+                <div class="room-card">
+                    <div class="price-tag">Rp 1.400.000 / bln</div>
+                    <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=600&auto=format&fit=crop" alt="Kamar Deluxe AC" class="room-img">
+                    <div class="room-details">
+                        <h3>Tipe 4: Deluxe AC</h3>
+                        <ul class="room-specs">
+                            <li>Luas: <strong>5 x 4 Meter</strong></li>
+                            <li><strong>AC 1 PK</strong></li>
+                            <li>WC Dalam & Lemari Tanam</li>
+                            <li>Kasur 90x200cm</li>
+                            <li>Full Keramik & Token Pribadi</li>
+                            <li>WiFi & Air Bersih Gratis</li>
+                        </ul>
+                        <a href="https://wa.me/6282285513028?text=Halo,%20saya%20tertarik%20Kamar%20Tipe%204" class="btn btn-wa">Booking / Tanya Kamar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="facilities" id="facilities">
+        <div class="container">
+            <h2 class="section-title">Fasilitas Umum</h2>
+            <div class="facilities-grid">
+                <div class="facility-item">
+                    <img src="https://assets-a1.kompasiana.com/items/album/2018/07/12/kost-5b46fe3edd0fa8484366af32.jpg" alt="Parkiran Luas" class="facility-img">
+                    <h4>Parkiran Luas</h4>
+                    <p class="facility-desc">Area parkir yang lega dan tertata untuk kenyamanan kendaraan motor Anda.</p>
+                </div>
+                <div class="facility-item">
+                    <img src="https://propertidijual.id/wp-content/uploads/2024/03/pexels-jean-van-der-meulen-1599791.jpg" alt="Dapur Umum" class="facility-img">
+                    <h4>Dapur Umum Lantai 2</h4>
+                    <p class="facility-desc">Dapur bersih di lantai 2 yang siap digunakan untuk kebutuhan masak harian.</p>
+                </div>
+                <div class="facility-item">
+                    <img src="https://arsitekrumah.co.id/wp-content/uploads/2025/10/Model-Rumah-Kos-Kosan-Halaman-Luas.webp" alt="Halaman Luas" class="facility-img">
+                    <h4>Halaman Luas</h4>
+                    <p class="facility-desc">Area terbuka hijau untuk sirkulasi udara segar dan tempat bersantai.</p>
+                </div>
+                <div class="facility-item">
+                    <img src="https://bajamarga.co.id/wp-content/uploads/2023/08/648ca7c1-c8fd-4ef3-ad97-58000b0bcb5f.jpg" alt="Pagar Aman" class="facility-img">
+                    <h4>Pagar 2 Sisi</h4>
+                    <p class="facility-desc">Keamanan ganda dengan akses pagar keliling yang terkunci.</p>
+                </div>
+                <div class="facility-item">
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj-lpnW-B21BueMHKqLVA_2jSWXWC2ohwQAZgBHUEaBu6oNX7zAmvKNXTuYDQ6dEI43LtjCN-JKljDCl00hbTaVBTuMu_7f4Yyv52fAhWHvIL5q0pbtqJpIzhHcGYtTKEH9WKzEeYgxq5E/s1280/WhatsApp+Image+2020-11-26+at+16.44.20.jpeg" alt="Full CCTV" class="facility-img">
+                    <h4>Full CCTV</h4>
+                    <p class="facility-desc">Sistem pengawasan 24 jam di berbagai titik demi keamanan maksimal.</p>
+                </div>
+                <div class="facility-item">
+                    <img src="https://iik.ac.id/blog/wp-content/uploads/2023/05/pengelolaan-air-bersih.jpeg" alt="Air Bersih" class="facility-img">
+                    <h4>Air Bersih Gratis</h4>
+                    <p class="facility-desc">Suplai air bersih yang lancar dan gratis untuk semua penghuni.</p>
+                </div>
+                <div class="facility-item">
+                    <img src="https://daudjayakontraktor.id/wp-content/uploads/2024/01/kos-kosan-2-lantai.jpg" alt="Lingkungan Nyaman" class="facility-img">
+                    <h4>Lingkungan Bersih</h4>
+                    <p class="facility-desc">Suasana sekitar yang tenang, bersih, dan nyaman untuk beristirahat.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">Lokasi & Kontak</h2>
+            
+            <div class="contact-split-wrapper">
+                <div class="contact-left">
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.452750593829!2d101.374271!3d0.4768164!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d5a98e7d6347f9%3A0x4a0412b2c9abb3f3!2sMALDIF%20HOME!5e1!3m2!1sid!2sid!4v1769808186131!5m2!1sid!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        
+                        <a href="https://maps.app.goo.gl/ec9A4GGxCqnQ666v7" target="_blank" class="btn btn-primary btn-map-overlay">
+                            Cari Kami di Sini 📍
+                        </a>
+                    </div>
+                </div>
+
+                <div class="cta-box">
+                    <h2 style="margin-bottom: 15px;">Siap untuk Bergabung?</h2>
+                    <p style="margin-bottom: 25px; opacity: 0.9;">
+                        Hubungi kami sekarang untuk booking kamar atau informasi lebih lanjut.
+                    </p>
+                    
+                    <a href="https://wa.me/6282285513028" class="btn btn-wa" style="font-size: 1.1rem; text-align: center;">
+                        Chat via WhatsApp 💬
+                    </a>
+
+                    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem;">
+                        <p><strong>Alamat:</strong><br>Jl bangau sakti. Jl mawar Gg.Putri RT 3 RW 4 Kel Simpang Baru Kecamatan Tampan</p>
+                        <p>📞 0822-8551-3028</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Maldif Home</h3>
+                    <p>Kos-kosan yang mengutamakan kenyamanan, keamanan dan pelayanan terbaik dengan lokasi strategis.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Kontak Kami</h3>
+                    <p>Jl bangau sakti. Jl mawar Gg.Putri RT 3 RW 4 Kel Simpang Baru Kecamatan Tampan</p>
+                    <p>📞 0822-8551-3028</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Metode Pembayaran</h3>
+                    <p>💵 Cash</p>
+                    <p>🏦 Transfer Bank</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2026 Maldif Home. Dibuat oleh <a href="https://infomedsoseizitpie.carrd.co/" target="_blank">Eizitpie Production</a>.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
