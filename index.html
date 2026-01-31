@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <style>
         /* --- CSS VARIABLES & RESET --- */
         :root {
+            /* Mode Terang (Default) */
             --primary-color: #0f172a;
             --accent-color: #2563eb;
             --secondary-color: #f8fafc;
@@ -15,10 +17,36 @@
             --text-light: #64748b;
             --white: #ffffff;
             --success: #22c55e;
+            --orange-btn: #f97316;
         }
 
-        html { scroll-behavior: smooth; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* --- DARK MODE VARIABLES --- */
+        [data-theme="dark"] {
+            --primary-color: #ffffff;
+            /* Judul jadi Putih Terang */
+            --accent-color: #3b82f6;
+            /* Biru lebih terang */
+            --secondary-color: #0f172a;
+            /* Background utama gelap */
+            --text-dark: #f1f5f9;
+            /* Teks paragraf jadi sangat muda/putih */
+            --text-light: #cbd5e1;
+            /* Teks deskripsi abu terang */
+            --white: #1e293b;
+            /* Kartu jadi abu tua */
+            --success: #4ade80;
+            /* Hijau lebih neon agar terlihat di gelap */
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Poppins', sans-serif;
@@ -26,11 +54,18 @@
             color: var(--text-dark);
             line-height: 1.6;
             padding-top: 80px;
+            /* Transisi halus saat ganti tema */
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        a { text-decoration: none; }
-        ul { list-style: none; }
-        
+        a {
+            text-decoration: none;
+        }
+
+        ul {
+            list-style: none;
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -39,14 +74,22 @@
 
         /* --- NAVIGATION BAR --- */
         nav {
-            background-color: var(--primary-color);
+            background-color: #0f172a;
+            /* Default gelap */
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             z-index: 1000;
             padding: 15px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        /* Memastikan Navbar tetap gelap di mode malam */
+        [data-theme="dark"] nav {
+            background-color: #020617;
+            border-bottom: 1px solid #1e293b;
         }
 
         .nav-container {
@@ -56,14 +99,19 @@
         }
 
         .logo {
-            color: var(--white);
+            color: #ffffff !important;
+            /* Selalu putih */
             font-size: 1.5rem;
             font-weight: 700;
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        .logo img { height: 40px; width: auto; }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
 
         .nav-right {
             display: flex;
@@ -71,18 +119,26 @@
             gap: 25px;
         }
 
-        .nav-links { display: flex; gap: 20px; }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
         .nav-links a {
-            color: #cbd5e1;
+            color: #cbd5e1 !important;
+            /* Selalu abu terang/putih */
             font-weight: 600;
             transition: color 0.3s;
             font-size: 0.95rem;
         }
-        .nav-links a:hover { color: var(--white); }
+
+        .nav-links a:hover {
+            color: #ffffff !important;
+        }
 
         .btn-nav-wa {
             background-color: var(--success);
-            color: var(--white);
+            color: #ffffff;
             padding: 8px 20px;
             border-radius: 50px;
             font-size: 0.9rem;
@@ -90,10 +146,59 @@
             border: 2px solid transparent;
             transition: all 0.3s;
         }
+
         .btn-nav-wa:hover {
             background-color: transparent;
             border-color: var(--success);
             color: var(--success);
+        }
+
+        /* --- TOMBOL DARK MODE --- */
+        .theme-btn {
+            background: transparent;
+            border: 2px solid #cbd5e1;
+            border-radius: 50px;
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 60px;
+            height: 32px;
+            position: relative;
+            margin-right: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--accent-color);
+        }
+
+        .sun-icon,
+        .moon-icon {
+            font-size: 14px;
+            line-height: 1;
+            z-index: 1;
+        }
+
+        .theme-btn::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 4px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background-color: #0f172a;
+            /* Warna indikator default */
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            z-index: 0;
+        }
+
+        [data-theme="dark"] .theme-btn::after {
+            transform: translateX(28px);
+            background-color: #ffffff;
         }
 
         /* --- UTILS --- */
@@ -106,15 +211,25 @@
             cursor: pointer;
             text-align: center;
         }
-        .btn-primary { background-color: var(--accent-color); color: var(--white); }
-        .btn-primary:hover { background-color: #1d4ed8; }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
 
         .btn-wa {
             background-color: var(--success);
-            color: var(--white);
+            color: #ffffff;
             width: 100%;
         }
-        .btn-wa:hover { background-color: #16a34a; }
+
+        .btn-wa:hover {
+            background-color: #16a34a;
+        }
 
         .section-title {
             text-align: center;
@@ -125,22 +240,53 @@
 
         /* --- HERO --- */
         .hero {
-            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=1920&auto=format&fit=crop');
+            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('https://idkos.com/images/property/elite-XKEymlO1Ft.jpeg');
             background-size: cover;
             background-position: center;
-            color: var(--white);
+            color: #ffffff;
             padding: 100px 0;
             text-align: center;
         }
-        .hero h1 { font-size: 3rem; margin-bottom: 10px; }
-        .hero p { font-size: 1.1rem; opacity: 0.9; max-width: 700px; margin: 0 auto; }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #ffffff !important;
+            /* Paksa Putih */
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #ffffff !important;
+            /* Paksa Putih */
+        }
 
         /* --- ABOUT --- */
-        .about { padding: 60px 0; background: var(--white); }
-        .about-content { text-align: center; max-width: 800px; margin: 0 auto; }
+        .about {
+            padding: 60px 0;
+            background: var(--secondary-color);
+            /* Ikut tema */
+        }
+
+        .about-container {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            padding: 40px 20px;
+        }
+
+        .about-content {
+            flex: 1;
+            text-align: left;
+        }
+
         .highlight-badge {
             background-color: var(--primary-color);
-            color: var(--white);
+            color: var(--secondary-color);
+            /* Teks badge kontras dengan bg badge */
             padding: 8px 16px;
             border-radius: 50px;
             font-size: 0.9rem;
@@ -148,25 +294,120 @@
             display: inline-block;
         }
 
+        /* Fix Badge text di dark mode */
+        [data-theme="dark"] .highlight-badge {
+            color: #0f172a;
+            /* Teks hitam di badge putih */
+        }
+
+        .section-title-left {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin: 15px 0;
+            font-weight: 700;
+        }
+
+        .about-buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+
+        .about-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* KARTU ABOUT DENGAN HOVER & DARK MODE */
+        .feature-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            /* Transisi Halus */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        [data-theme="dark"] .feature-card {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-color: var(--accent-color);
+        }
+
+        .icon-box {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            color: var(--success);
+        }
+
+        [data-theme="dark"] .icon-box {
+            background: rgba(34, 197, 94, 0.1);
+            padding: 10px;
+            border-radius: 50%;
+            width: fit-content;
+        }
+
+        .feature-text h4 {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+
+        .feature-text p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
         /* --- ROOMS SECTION --- */
-        .rooms { padding: 60px 0; }
+        .rooms {
+            padding: 60px 0;
+        }
+
         .rooms-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); 
+            grid-template-columns: repeat(2, 1fr);
             gap: 30px;
         }
+
         .room-card {
             background: var(--white);
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, background-color 0.3s ease;
             display: flex;
             flex-direction: column;
             position: relative;
         }
-        .room-card:hover { transform: translateY(-5px); }
-        
+
+        .room-card:hover {
+            transform: translateY(-5px);
+        }
+
         .room-img {
             width: 100%;
             height: 250px;
@@ -184,34 +425,44 @@
             font-weight: 600;
             font-size: 0.9rem;
             backdrop-filter: blur(4px);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             z-index: 10;
         }
-        
-        .room-details { 
-            padding: 25px; 
-            flex-grow: 1; 
-            display: flex; 
-            flex-direction: column; 
+
+        .room-details {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
-        .room-details h3 { color: var(--primary-color); margin-bottom: 15px; }
-        
-        .room-specs { 
-            list-style: none; 
-            margin-bottom: 25px; 
-            font-size: 0.9rem; 
+
+        .room-details h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .room-specs {
+            list-style: none;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
             color: var(--text-light);
             flex-grow: 1;
         }
-        .room-specs li { 
-            margin-bottom: 8px; 
-            padding-bottom: 5px; 
+
+        .room-specs li {
+            margin-bottom: 8px;
+            padding-bottom: 5px;
             border-bottom: 1px solid #f1f5f9;
             display: flex;
             align-items: center;
         }
+
+        [data-theme="dark"] .room-specs li {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         .room-specs li::before {
-            content: "✓"; 
+            content: "✓";
             color: var(--success);
             font-weight: bold;
             margin-right: 10px;
@@ -220,22 +471,48 @@
 
         .room-details .btn-wa {
             margin-top: auto;
+            background-color: var(--orange-btn);
+            border: 2px solid var(--orange-btn);
+            color: #fff;
+        }
+
+        .room-details .btn-wa:hover {
+            background-color: transparent;
+            color: var(--orange-btn);
         }
 
         /* --- FACILITIES --- */
-        .facilities { padding: 60px 0; background: var(--white); }
+        .facilities {
+            padding: 60px 0;
+            background: var(--secondary-color);
+        }
+
         .facilities-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 25px;
         }
-        .facility-item { 
-            text-align: center; 
-            background: #fff;
+
+        /* KARTU FASILITAS DENGAN HOVER & DARK MODE */
+        .facility-item {
+            text-align: center;
+            background: var(--white);
             padding: 15px;
             border-radius: 10px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
         }
+
+        [data-theme="dark"] .facility-item {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .facility-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-color: var(--success);
+        }
+
         .facility-img {
             width: 100%;
             height: 150px;
@@ -243,12 +520,26 @@
             border-radius: 8px;
             margin-bottom: 15px;
         }
-        .facility-item h4 { font-size: 1.1rem; color: var(--primary-color); margin-bottom: 8px; font-weight: 600; }
-        .facility-desc { font-size: 0.85rem; color: var(--text-light); line-height: 1.4; }
 
-        /* --- CONTACT (SPLIT LAYOUT) --- */
-        .contact { padding: 60px 0; text-align: center; }
-        
+        .facility-item h4 {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .facility-desc {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+
+        /* --- CONTACT --- */
+        .contact {
+            padding: 60px 0;
+            text-align: center;
+        }
+
         .contact-split-wrapper {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -257,6 +548,9 @@
             margin-top: 40px;
         }
 
+        /* --- UPDATE BAGIAN CONTACT --- */
+
+        /* 1. PETA (MAP CONTAINER) */
         .map-container {
             width: 100%;
             height: 100%;
@@ -264,30 +558,121 @@
             background-color: #e2e8f0;
             border-radius: 12px;
             overflow: hidden;
-            /* PENTING: Menjadi acuan posisi tombol */
-            position: relative; 
+            position: relative;
+            /* Menambahkan transisi untuk transform dan box-shadow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+            /* Memberikan border tipis agar lebih rapi */
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        /* PENTING: Style untuk Tombol di atas Peta */
-        .btn-map-overlay {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%); /* Agar pas di tengah */
-            z-index: 20; /* Agar di atas peta */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            border: 2px solid #fff; /* Agar lebih kontras */
+        /* Efek saat kursor mengarah ke Peta */
+        .map-container:hover {
+            /* Mengangkat peta sedikit ke atas */
+            transform: translateY(-8px);
+            /* Menambahkan bayangan yang lembut agar terlihat melayang */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
         }
 
+        /* Pastikan border di dark mode juga halus */
+        [data-theme="dark"] .map-container {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+
+        /* 2. KOTAK CTA (SIAP UNTUK BERGABUNG) */
         .cta-box {
             background-color: var(--primary-color);
-            color: var(--white);
+            color: var(--secondary-color);
             padding: 40px;
             border-radius: 12px;
             text-align: left;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            /* Menambahkan transisi agar animasi halus */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* Efek saat kursor mengarah ke Kotak CTA */
+        .cta-box:hover {
+            /* Mengangkat kotak sedikit ke atas */
+            transform: translateY(-8px);
+            /* Menambahkan bayangan yang menonjol */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Efek khusus di Mode Terang: sedikit menggelapkan warna background saat hover */
+        body:not([data-theme="dark"]) .cta-box:hover {
+            /* Menggunakan filter brightness untuk membuat warna aslinya sedikit lebih gelap/pekat */
+            filter: brightness(0.95);
+        }
+
+        /* Efek khusus di Dark Mode: border halus saat hover agar lebih tegas */
+        [data-theme="dark"] .cta-box:hover {
+            border: 1px solid var(--accent-color);
+        }
+
+        [data-theme="dark"] .map-container {
+            opacity: 0.8;
+            /* Sedikit redup agar tidak silau */
+        }
+
+        .btn-map-overlay {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            background-color: #ffffff;
+            color: #0f172a;
+            border-radius: 50px;
+            padding: 12px 28px;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.5px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-map-overlay:hover {
+            background-color: #f8fafc;
+            color: var(--accent-color);
+            transform: translateX(-50%) translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .cta-box {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            padding: 40px;
+            border-radius: 12px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Teks di dalam kotak kontak (CTA) */
+        .cta-box h2,
+        .cta-box p,
+        .cta-box div {
+            color: #ffffff;
+            /* Pastikan selalu terbaca di atas background biru/putih */
+        }
+
+        [data-theme="dark"] .cta-box {
+            background-color: var(--white);
+            /* Abu tua */
+        }
+
+        [data-theme="dark"] .cta-box h2 {
+            color: #ffffff;
+        }
+
+        [data-theme="dark"] .cta-box p,
+        [data-theme="dark"] .cta-box div {
+            color: #cbd5e1;
         }
 
         /* --- FOOTER --- */
@@ -297,6 +682,7 @@
             padding: 50px 0 20px;
             font-size: 0.9rem;
         }
+
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -304,43 +690,318 @@
             margin-bottom: 40px;
             text-align: left;
         }
-        .footer-col h3 { color: var(--white); margin-bottom: 20px; font-size: 1.2rem; }
-        .footer-col p { margin-bottom: 10px; }
+
+        .footer-col h3 {
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-col p {
+            margin-bottom: 10px;
+        }
+
         .copyright {
             border-top: 1px solid #1e293b;
             padding-top: 20px;
             text-align: center;
         }
+
         .copyright a {
             color: var(--success);
             font-weight: 600;
             transition: color 0.3s;
         }
+
         .copyright a:hover {
-            color: var(--white);
+            color: #ffffff;
             text-decoration: underline;
+        }
+
+        /* --- UPDATE TOMBOL BACK TO TOP DENGAN GLOW --- */
+
+        #backToTopBtn {
+            display: none;
+            /* Default tersembunyi */
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            background-color: var(--orange-btn);
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+
+            /* Transisi untuk semua properti (posisi, warna, bayangan) */
+            transition: all 0.3s ease;
+
+            /* Bayangan awal (biasa/redup) */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Saat kursor diarahkan (Hover) */
+        #backToTopBtn:hover {
+            background-color: #ea580c;
+            /* Sedikit lebih gelap agar kontras */
+
+            /* Efek Naik */
+            transform: translateY(-5px);
+
+            /* RAHASIA GLOW ORANYE: Tumpuk bayangan dengan warna oranye */
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.3),
+                /* Bayangan hitam untuk kedalaman */
+                0 0 20px var(--orange-btn),
+                /* Pendaran oranye sedang */
+                0 0 40px var(--orange-btn);
+            /* Pendaran oranye luas */
         }
 
         /* --- RESPONSIVE --- */
         @media (max-width: 992px) {
-            .facilities-grid { grid-template-columns: repeat(2, 1fr); }
-            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .facilities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
         }
+
         @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .rooms-grid { grid-template-columns: 1fr; }
-            .facilities-grid { grid-template-columns: 1fr; } 
-            .hero h1 { font-size: 2rem; }
+            .nav-links {
+                display: none;
+            }
+
+            .rooms-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .facilities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
 
             .contact-split-wrapper {
                 grid-template-columns: 1fr;
             }
+
             .map-container {
                 height: 300px;
             }
+
+            .about-container {
+                flex-direction: column;
+            }
+
+            .about-grid {
+                width: 100%;
+            }
+        }
+
+        .btn-green {
+            background-color: var(--success);
+            color: #ffffff;
+        }
+
+        .btn-green:hover {
+            background-color: #16a34a;
+            color: #ffffff;
+        }
+
+        /* --- EFEK GLOWING TEXT (BERSINAR) --- */
+
+        /* 1. Target: Link Navbar (Beranda, dll) & Logo */
+        .nav-links a,
+        .logo {
+            /* Tambahkan transisi agar nyalanya perlahan, tidak kaget */
+            transition: text-shadow 0.3s ease, color 0.3s ease;
+        }
+
+        /* Saat kursor diarahkan (Hover) */
+        .nav-links a:hover,
+        .logo:hover {
+            color: #ffffff !important;
+            /* Pastikan teks jadi putih terang */
+
+            /* Rahasia Glow: Tumpuk beberapa bayangan putih */
+            text-shadow:
+                0 0 5px rgba(255, 255, 255, 0.8),
+                /* Cahaya dekat (tajam) */
+                0 0 10px rgba(255, 255, 255, 0.6),
+                /* Cahaya tengah */
+                0 0 20px rgba(255, 255, 255, 0.4);
+            /* Pendaran luar (lembut) */
+        }
+
+        /* 2. Target: Teks Judul & Paragraf di Hero */
+        .hero h1,
+        .hero p {
+            transition: text-shadow 0.3s ease;
+        }
+
+        .hero h1:hover,
+        .hero p:hover {
+            /* Efek glow yang sedikit lebih kuat untuk judul besar */
+            text-shadow:
+                0 0 10px rgba(255, 255, 255, 0.9),
+                0 0 20px rgba(255, 255, 255, 0.7),
+                0 0 30px var(--accent-color);
+            /* Sedikit sentuhan biru di luar */
+        }
+
+        /* --- UPDATE EFEK GLOW TAMBAHAN --- */
+
+        /* 1. Target: Judul Bagian (Tipe Kamar, Fasilitas, Kontak) & Judul Maldif Home (About) */
+        .section-title,
+        .section-title-left {
+            /* Transisi halus untuk bayangan dan sedikit gerakan */
+            transition: text-shadow 0.3s ease, transform 0.3s ease;
+            cursor: default;
+            /* Agar kursor tetap standar */
+        }
+
+        .section-title:hover,
+        .section-title-left:hover {
+            /* Kita gunakan pendaran warna Biru (aksen) agar terlihat di background putih */
+            text-shadow:
+                0 0 8px rgba(37, 99, 235, 0.5),
+                /* Pendaran dalam */
+                0 0 16px rgba(37, 99, 235, 0.3);
+            /* Pendaran luar */
+
+            /* Sedikit efek membesar (zoom) agar lebih interaktif */
+            transform: scale(1.02);
+        }
+
+        /* Khusus Mode Gelap: Ubah warna glow judul jadi Putih agar lebih terang */
+        [data-theme="dark"] .section-title:hover,
+        [data-theme="dark"] .section-title-left:hover {
+            text-shadow:
+                0 0 10px rgba(255, 255, 255, 0.8),
+                0 0 20px rgba(255, 255, 255, 0.4);
+        }
+
+
+        /* 2. Target: Badge di About (Khusus Laki-laki • Lokasi Strategis) */
+        .highlight-badge {
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            cursor: default;
+        }
+
+        .highlight-badge:hover {
+            /* Glow Box: Membuat efek cahaya di sekeliling tombol */
+            box-shadow: 0 0 20px var(--accent-color);
+
+            /* Efek naik sedikit */
+            transform: translateY(-3px);
+        }
+
+        /* --- EFEK GLOW PADA FOOTER --- */
+
+        /* 1. Target semua teks di dalam footer */
+        footer h3,
+        footer p,
+        footer a {
+            /* Transisi halus agar nyalanya tidak kaget */
+            transition: text-shadow 0.3s ease, color 0.3s ease;
+        }
+
+        /* 2. Saat kursor diarahkan (Hover) */
+        footer h3:hover,
+        footer p:hover,
+        footer a:hover {
+            color: #ffffff;
+            /* Pastikan teks menjadi putih terang */
+
+            /* Efek Bersinar: Campuran putih dan warna aksen (biru) */
+            text-shadow:
+                0 0 8px rgba(255, 255, 255, 0.6),
+                /* Cahaya putih dekat */
+                0 0 15px var(--accent-color);
+            /* Pendaran biru di luar */
+        }
+
+        /* Tambahan: Pastikan link copyright tetap punya garis bawah saat di-hover */
+        footer .copyright a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- KOREKSI: MATIKAN GLOW DI COPYRIGHT --- */
+
+        /* Kita reset efek hover khusus untuk teks di dalam .copyright */
+        footer .copyright p:hover,
+        footer .copyright a:hover {
+            text-shadow: none !important;
+            /* Paksa hapus efek bersinar */
+            transform: none !important;
+            /* Paksa diam (tidak bergerak) */
+        }
+
+        /* Khusus link "Eizitpie Production", kita beri warna putih biasa saja saat disorot (tanpa glow) */
+        footer .copyright a:hover {
+            color: #ffffff !important;
+            text-decoration: underline;
+            /* Tetap ada garis bawah agar terlihat bisa diklik */
+        }
+
+        /* --- COPYRIGHT: LOGIKA TERPISAH (SPAN VS LINK) --- */
+
+        /* 1. Atur Paragraf Induk (Wadah) */
+        footer .copyright p {
+            color: #94a3b8;
+            /* Warna default abu-abu */
+            margin: 0;
+            cursor: default;
+            /* Pastikan wadah utama tidak punya efek hover apa-apa */
+            pointer-events: auto;
+        }
+
+        /* 2. KONDISI PERTAMA: Target Teks Biasa (SPAN) */
+        footer .copyright span {
+            transition: text-shadow 0.3s ease, color 0.3s ease;
+            display: inline-block;
+            /* Agar properti transform/shadow bekerja sempurna */
+        }
+
+        /* Saat kursor mengarah ke SPAN -> SPAN Bersinar, Link diam */
+        footer .copyright span:hover {
+            color: #ffffff;
+            text-shadow:
+                0 0 8px rgba(255, 255, 255, 0.6),
+                0 0 15px var(--accent-color);
+        }
+
+        /* 3. KONDISI KEDUA: Target Link (A) */
+        footer .copyright a {
+            color: var(--success);
+            /* Warna link default (hijau) */
+            text-decoration: none;
+            transition: text-shadow 0.3s ease, color 0.3s ease;
+            position: relative;
+            z-index: 10;
+            /* Pastikan link berada di lapisan atas */
+        }
+
+        /* Saat kursor mengarah ke LINK -> Link Bersinar, Span diam (karena beda elemen) */
+        footer .copyright a:hover {
+            color: #ffffff !important;
+            text-decoration: underline;
+            text-shadow:
+                0 0 8px rgba(255, 255, 255, 0.6),
+                0 0 15px var(--accent-color);
         }
     </style>
 </head>
+
 <body>
 
     <nav>
@@ -349,18 +1010,22 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/619/619153.png" alt="Logo Maldif Home">
                 Maldif Home
             </div>
-            
+
             <div class="nav-right">
                 <ul class="nav-links">
                     <li><a href="#home">Beranda</a></li>
                     <li><a href="#about">Tentang</a></li>
                     <li><a href="#rooms">Tipe Kamar</a></li>
                     <li><a href="#facilities">Fasilitas</a></li>
-                    <li><a href="#contact">Lokasi</a></li>
+                    <li><a href="#contact">Kontak</a></li>
                 </ul>
-                <a href="https://wa.me/6282285513028?text=Halo%20Kak.%20Saya%20Mau%20Tanya%20Seputar%20Kos%20Maldif%20dong?" 
-                   class="btn-nav-wa" target="_blank">
-                   Hubungi Kami
+                <button id="theme-toggle" class="theme-btn" aria-label="Ganti Mode Tema">
+                    <span class="sun-icon">☀️</span>
+                    <span class="moon-icon">🌙</span>
+                </button>
+                <a href="https://wa.me/6282285513028?text=Halo%20Kak.%20Saya%20Mau%20Tanya%20Seputar%20Kos%20Maldif%20dong?"
+                    class="btn-nav-wa" target="_blank">
+                    Hubungi Kami
                 </a>
             </div>
         </div>
@@ -369,38 +1034,65 @@
     <header class="hero" id="home">
         <div class="container">
             <h1>Maldif Home</h1>
-            <p>Jl bangau sakti. Jl mawar Gg.Putri RT 3 RW 4 Kel Simpang Baru Kecamatan Tampan</p>
+            <p>"Lebih dari Sekadar Kos, Ini Rumah Anda."</p>
         </div>
     </header>
 
     <section class="about" id="about">
-        <div class="container">
+        <div class="container about-container">
+
             <div class="about-content">
-                <div class="highlight-badge">Khusus Laki-laki • Lokasi Strategis</div>
-                <h2 class="section-title">Tentang Maldif Home</h2>
+                <span class="highlight-badge">Khusus Laki-laki • Lokasi Strategis</span>
+                <h2 class="section-title-left">Maldif Home</h2>
                 <p>
-                    Maldif Home merupakan Kos-kosan yang mengutamakan kenyamanan, kemanan dan pelayanan terbaik. 
-                    Kos-kosan ini terletak di lokasi yang sangat strategis dikarenakan sangat dekat dengan pusat perbelanjaan, 
-                    kampus UNRI, UIN, SMK Farmasi dan STIFAR.
-                </p>
-                <br>
-                <p>
-                    Kos ini menyediakan fasilitas, WiFi, token pribadi, satu set kasur, lemari, wc dalam, dapur umum 
-                    dan sudah full keramik, area parkir yang luas serta lingkungan yang bersih dan nyaman untuk dipandang.
+                    Maldif Home merupakan Kos-kosan yang mengutamakan kenyamanan, keamanan dan pelayanan terbaik.
+                    Terletak di lokasi strategis dekat pusat perbelanjaan, kampus UNRI, UIN, SMK Farmasi dan STIFAR.
+                    Cocok untuk perantau yang butuh tempat tinggal nyaman dengan fasilitas lengkap. kos ini
+                    diperuntukkan khusus untuk laki-laki
+                    dengan harga yang relatif murah dengan kualitas yang tidak murahan.
+                    Selamat bergabung dan selamat menikmati fasilitas yang kami sediakan.
                 </p>
 
-                <div style="margin-top: 30px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-                    <a href="https://wa.me/6282285513028?text=Halo%20Kak.%20Saya%20Mau%20Tanya%20Seputar%20Kos%20Maldif%20dong?" 
-                       class="btn btn-wa" 
-                       style="width: auto; margin-top: 0;">
-                       Hubungi Kami 💬
-                    </a>
-                    <a href="#contact" 
-                       class="btn btn-primary">
-                       Lihat Lokasi 📍
-                    </a>
+                <div class="about-buttons">
+                    <a href="https://wa.me/6282285513028" class="btn btn-green">📞 Hubungi Sekarang</a>
+                    <a href="#contact" class="btn btn-outline">📍 Lihat Lokasi</a>
                 </div>
             </div>
+
+            <div class="about-grid">
+                <div class="feature-card">
+                    <div class="icon-box">🛡️</div>
+                    <div class="feature-text">
+                        <h4>Aman</h4>
+                        <p>Full CCTV 24 Jam</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="icon-box">🛜</div>
+                    <div class="feature-text">
+                        <h4>WiFi</h4>
+                        <p>Internet Cepat</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="icon-box">⚡</div>
+                    <div class="feature-text">
+                        <h4>Listrik</h4>
+                        <p>Token Pribadi</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="icon-box">🏬</div>
+                    <div class="feature-text">
+                        <h4>Strategis</h4>
+                        <p>Dekat Kampus</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -408,12 +1100,13 @@
         <div class="container">
             <h2 class="section-title">Pilihan Tipe Kamar</h2>
             <div class="rooms-grid">
-                
+
                 <div class="room-card">
-                    <div class="price-tag">Rp 800.000 / bln</div>
-                    <img src="https://images.unsplash.com/photo-1631049552057-403cdb8f0658?q=80&w=600&auto=format&fit=crop" alt="Kamar Standar Non AC" class="room-img">
+                    <div class="price-tag">Rp 450.000 / bln</div>
+                    <img src="https://lh3.googleusercontent.com/u/0/d/1mmiy61bgXfh8XeDBs7SLjNkFQST9JTA4"
+                        alt="Kamar Standar Non AC" class="room-img">
                     <div class="room-details">
-                        <h3>Tipe 1: Standar Non AC</h3>
+                        <h3>Tipe 1: Kamar Standar Non AC</h3>
                         <ul class="room-specs">
                             <li>Luas: 4 x 3 Meter</li>
                             <li>WC Dalam & Lemari Tanam</li>
@@ -421,15 +1114,17 @@
                             <li>Full Keramik & Token Pribadi</li>
                             <li>WiFi & Air Bersih Gratis</li>
                         </ul>
-                        <a href="https://wa.me/6282285513028?text=Halo,%20saya%20tertarik%20Kamar%20Tipe%201" class="btn btn-wa">Booking / Tanya Kamar</a>
+                        <a href="https://wa.me/6282285513028?text=Halo,%20saya%20tertarik%20Kamar%20Tipe%201%20Kamar Standar Non AC"
+                            class="btn btn-wa">Booking / Tanya Kamar</a>
                     </div>
                 </div>
 
                 <div class="room-card">
-                    <div class="price-tag">Rp 1.100.000 / bln</div>
-                    <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?q=80&w=600&auto=format&fit=crop" alt="Kamar Standar AC" class="room-img">
+                    <div class="price-tag">Rp 550.000 / bln</div>
+                    <img src="https://lh3.googleusercontent.com/u/0/d/1L5E4dyFEPlb6Qp99m_lqqt1JA_4ZWGUp"
+                        alt="Kamar Standar AC" class="room-img">
                     <div class="room-details">
-                        <h3>Tipe 2: Standar AC</h3>
+                        <h3>Tipe 2: Kamar Standar AC</h3>
                         <ul class="room-specs">
                             <li>Luas: 4 x 3 Meter</li>
                             <li><strong>AC 1 PK</strong></li>
@@ -438,15 +1133,17 @@
                             <li>Full Keramik & Token Pribadi</li>
                             <li>WiFi & Air Bersih Gratis</li>
                         </ul>
-                        <a href="https://wa.me/6282285513028?text=Halo,%20saya%20tertarik%20Kamar%20Tipe%202" class="btn btn-wa">Booking / Tanya Kamar</a>
+                        <a href="https://wa.me/6282285513028?text=Halo,%20saya%20tertarik%20Kamar%20Tipe%202%20Kamar Standar AC"
+                            class="btn btn-wa">Booking / Tanya Kamar</a>
                     </div>
                 </div>
 
                 <div class="room-card">
-                    <div class="price-tag">Rp 1.000.000 / bln</div>
-                    <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?q=80&w=600&auto=format&fit=crop" alt="Kamar Deluxe Non AC" class="room-img">
+                    <div class="price-tag">Rp 650.000 / bln</div>
+                    <img src="https://lh3.googleusercontent.com/u/0/d/1UYGOplUM3mvu0S977EDYNu7TROK3fN-h"
+                        alt="Kamar Deluxe Non AC" class="room-img">
                     <div class="room-details">
-                        <h3>Tipe 3: Deluxe Non AC</h3>
+                        <h3>Tipe 3: Kamar Deluxe Non AC</h3>
                         <ul class="room-specs">
                             <li>Luas: <strong>5 x 4 Meter</strong></li>
                             <li>WC Dalam & Lemari Tanam</li>
@@ -454,15 +1151,17 @@
                             <li>Full Keramik & Token Pribadi</li>
                             <li>WiFi & Air Bersih Gratis</li>
                         </ul>
-                        <a href="https://wa.me/6282285513028?text=Halo,%20saya%20tertarik%20Kamar%20Tipe%203" class="btn btn-wa">Booking / Tanya Kamar</a>
+                        <a href="https://wa.me/6282285513028?text=Halo,%20saya%20tertarik%20Kamar%20Tipe%203%20Kamar Deluxe Non AC"
+                            class="btn btn-wa">Booking / Tanya Kamar</a>
                     </div>
                 </div>
 
                 <div class="room-card">
-                    <div class="price-tag">Rp 1.400.000 / bln</div>
-                    <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=600&auto=format&fit=crop" alt="Kamar Deluxe AC" class="room-img">
+                    <div class="price-tag">Rp 750.000 / bln</div>
+                    <img src="https://lh3.googleusercontent.com/u/0/d/1I6zMeNUDCiv1mAG6Ff1rzKDb2zQpo2fd"
+                        alt="Kamar Deluxe AC" class="room-img">
                     <div class="room-details">
-                        <h3>Tipe 4: Deluxe AC</h3>
+                        <h3>Tipe 4: Kamar Deluxe AC</h3>
                         <ul class="room-specs">
                             <li>Luas: <strong>5 x 4 Meter</strong></li>
                             <li><strong>AC 1 PK</strong></li>
@@ -471,7 +1170,8 @@
                             <li>Full Keramik & Token Pribadi</li>
                             <li>WiFi & Air Bersih Gratis</li>
                         </ul>
-                        <a href="https://wa.me/6282285513028?text=Halo,%20saya%20tertarik%20Kamar%20Tipe%204" class="btn btn-wa">Booking / Tanya Kamar</a>
+                        <a href="https://wa.me/6282285513028?text=Halo,%20saya%20tertarik%20Kamar%20Tipe%204%20Kamar Deluxe AC"
+                            class="btn btn-wa">Booking / Tanya Kamar</a>
                     </div>
                 </div>
             </div>
@@ -483,37 +1183,46 @@
             <h2 class="section-title">Fasilitas Umum</h2>
             <div class="facilities-grid">
                 <div class="facility-item">
-                    <img src="https://assets-a1.kompasiana.com/items/album/2018/07/12/kost-5b46fe3edd0fa8484366af32.jpg" alt="Parkiran Luas" class="facility-img">
+                    <img src="https://assets-a1.kompasiana.com/items/album/2018/07/12/kost-5b46fe3edd0fa8484366af32.jpg"
+                        alt="Parkiran Luas" class="facility-img">
                     <h4>Parkiran Luas</h4>
-                    <p class="facility-desc">Area parkir yang lega dan tertata untuk kenyamanan kendaraan motor Anda.</p>
+                    <p class="facility-desc">Area parkir yang lega dan tertata untuk kenyamanan kendaraan motor Anda.
+                    </p>
                 </div>
                 <div class="facility-item">
-                    <img src="https://propertidijual.id/wp-content/uploads/2024/03/pexels-jean-van-der-meulen-1599791.jpg" alt="Dapur Umum" class="facility-img">
+                    <img src="https://propertidijual.id/wp-content/uploads/2024/03/pexels-jean-van-der-meulen-1599791.jpg"
+                        alt="Dapur Umum" class="facility-img">
                     <h4>Dapur Umum Lantai 2</h4>
-                    <p class="facility-desc">Dapur bersih di lantai 2 yang siap digunakan untuk kebutuhan masak harian.</p>
+                    <p class="facility-desc">Dapur bersih di lantai 2 yang siap digunakan untuk kebutuhan masak harian.
+                    </p>
                 </div>
                 <div class="facility-item">
-                    <img src="https://arsitekrumah.co.id/wp-content/uploads/2025/10/Model-Rumah-Kos-Kosan-Halaman-Luas.webp" alt="Halaman Luas" class="facility-img">
+                    <img src="https://arsitekrumah.co.id/wp-content/uploads/2025/10/Model-Rumah-Kos-Kosan-Halaman-Luas.webp"
+                        alt="Halaman Luas" class="facility-img">
                     <h4>Halaman Luas</h4>
                     <p class="facility-desc">Area terbuka hijau untuk sirkulasi udara segar dan tempat bersantai.</p>
                 </div>
                 <div class="facility-item">
-                    <img src="https://bajamarga.co.id/wp-content/uploads/2023/08/648ca7c1-c8fd-4ef3-ad97-58000b0bcb5f.jpg" alt="Pagar Aman" class="facility-img">
+                    <img src="https://bajamarga.co.id/wp-content/uploads/2023/08/648ca7c1-c8fd-4ef3-ad97-58000b0bcb5f.jpg"
+                        alt="Pagar Aman" class="facility-img">
                     <h4>Pagar 2 Sisi</h4>
                     <p class="facility-desc">Keamanan ganda dengan akses pagar keliling yang terkunci.</p>
                 </div>
                 <div class="facility-item">
-                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj-lpnW-B21BueMHKqLVA_2jSWXWC2ohwQAZgBHUEaBu6oNX7zAmvKNXTuYDQ6dEI43LtjCN-JKljDCl00hbTaVBTuMu_7f4Yyv52fAhWHvIL5q0pbtqJpIzhHcGYtTKEH9WKzEeYgxq5E/s1280/WhatsApp+Image+2020-11-26+at+16.44.20.jpeg" alt="Full CCTV" class="facility-img">
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj-lpnW-B21BueMHKqLVA_2jSWXWC2ohwQAZgBHUEaBu6oNX7zAmvKNXTuYDQ6dEI43LtjCN-JKljDCl00hbTaVBTuMu_7f4Yyv52fAhWHvIL5q0pbtqJpIzhHcGYtTKEH9WKzEeYgxq5E/s1280/WhatsApp+Image+2020-11-26+at+16.44.20.jpeg"
+                        alt="Full CCTV" class="facility-img">
                     <h4>Full CCTV</h4>
                     <p class="facility-desc">Sistem pengawasan 24 jam di berbagai titik demi keamanan maksimal.</p>
                 </div>
                 <div class="facility-item">
-                    <img src="https://iik.ac.id/blog/wp-content/uploads/2023/05/pengelolaan-air-bersih.jpeg" alt="Air Bersih" class="facility-img">
+                    <img src="https://iik.ac.id/blog/wp-content/uploads/2023/05/pengelolaan-air-bersih.jpeg"
+                        alt="Air Bersih" class="facility-img">
                     <h4>Air Bersih Gratis</h4>
                     <p class="facility-desc">Suplai air bersih yang lancar dan gratis untuk semua penghuni.</p>
                 </div>
                 <div class="facility-item">
-                    <img src="https://daudjayakontraktor.id/wp-content/uploads/2024/01/kos-kosan-2-lantai.jpg" alt="Lingkungan Nyaman" class="facility-img">
+                    <img src="https://daudjayakontraktor.id/wp-content/uploads/2024/01/kos-kosan-2-lantai.jpg"
+                        alt="Lingkungan Nyaman" class="facility-img">
                     <h4>Lingkungan Bersih</h4>
                     <p class="facility-desc">Suasana sekitar yang tenang, bersih, dan nyaman untuk beristirahat.</p>
                 </div>
@@ -524,13 +1233,16 @@
     <section class="contact" id="contact">
         <div class="container">
             <h2 class="section-title">Lokasi & Kontak</h2>
-            
+
             <div class="contact-split-wrapper">
                 <div class="contact-left">
                     <div class="map-container">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.452750593829!2d101.374271!3d0.4768164!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d5a98e7d6347f9%3A0x4a0412b2c9abb3f3!2sMALDIF%20HOME!5e1!3m2!1sid!2sid!4v1769808186131!5m2!1sid!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                        
-                        <a href="https://maps.app.goo.gl/ec9A4GGxCqnQ666v7" target="_blank" class="btn btn-primary btn-map-overlay">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.452750593829!2d101.374271!3d0.4768164!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d5a98e7d6347f9%3A0x4a0412b2c9abb3f3!2sMALDIF%20HOME!5e1!3m2!1sid!2sid!4v1769808186131!5m2!1sid!2sid"
+                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+                        <a href="https://maps.app.goo.gl/ec9A4GGxCqnQ666v7" target="_blank" class="btn btn-map-overlay">
                             Cari Kami di Sini 📍
                         </a>
                     </div>
@@ -541,14 +1253,17 @@
                     <p style="margin-bottom: 25px; opacity: 0.9;">
                         Hubungi kami sekarang untuk booking kamar atau informasi lebih lanjut.
                     </p>
-                    
-                    <a href="https://wa.me/6282285513028" class="btn btn-wa" style="font-size: 1.1rem; text-align: center;">
+
+                    <a href="https://wa.me/6282285513028" class="btn btn-wa"
+                        style="font-size: 1.1rem; text-align: center;">
                         Chat via WhatsApp 💬
                     </a>
 
-                    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem;">
-                        <p><strong>Alamat:</strong><br>Jl bangau sakti. Jl mawar Gg.Putri RT 3 RW 4 Kel Simpang Baru Kecamatan Tampan</p>
-                        <p>📞 0822-8551-3028</p>
+                    <div
+                        style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem;">
+                        <p><strong>Alamat:</strong><br>🏠 | ➤ Jl Bangau Sakti. Jl mawar Gg.Putri RT 3 RW 4 Kel Simpang
+                            Baru Kecamatan Tampan Kota Pekanbaru, Riau</p><br>
+                        <p><strong>Kontak:</strong><br>📞 | ➤ 0822-8551-3028</p>
                     </div>
                 </div>
             </div>
@@ -560,11 +1275,14 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <h3>Maldif Home</h3>
-                    <p>Kos-kosan yang mengutamakan kenyamanan, keamanan dan pelayanan terbaik dengan lokasi strategis.</p>
+                    <p>🎯 Kos-kosan yang mengutamakan kenyamanan, keamanan dan pelayanan terbaik dengan lokasi
+                        strategis.
+                    </p>
                 </div>
                 <div class="footer-col">
                     <h3>Kontak Kami</h3>
-                    <p>Jl bangau sakti. Jl mawar Gg.Putri RT 3 RW 4 Kel Simpang Baru Kecamatan Tampan</p>
+                    <p>🏠 Jl Bangau Sakti. Jl mawar Gg.Putri RT 3 RW 4 Kel Simpang Baru Kecamatan Tampan Kota Pekanbaru,
+                        Riau</p>
                     <p>📞 0822-8551-3028</p>
                 </div>
                 <div class="footer-col">
@@ -574,10 +1292,65 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>© 2026 Maldif Home. Dibuat oleh <a href="https://infomedsoseizitpie.carrd.co/" target="_blank">Eizitpie Production</a>.</p>
+                <p>
+                    <span>© 2026 Maldif Home. Dibuat oleh </span>
+                    <a href="https://infomedsoseizitpie.carrd.co/" target="_blank">Eizitpie Production</a>.
+                </p>
             </div>
         </div>
     </footer>
 
+    <button onclick="topFunction()" id="backToTopBtn" title="Kembali ke Atas">
+        ⇧⇧
+    </button>
+
+    <script>
+        // Ambil elemen tombol
+        let mybutton = document.getElementById("backToTopBtn");
+
+        // Saat user scroll ke bawah sejauh 300px, tampilkan tombol
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        }
+
+        // Saat tombol diklik, gulir ke atas dengan mulus
+        function topFunction() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Ambil elemen tombol dan html
+        const toggleBtn = document.getElementById('theme-toggle');
+        const htmlTag = document.documentElement;
+
+        // Cek apakah pengguna sudah pernah simpan preferensi sebelumnya
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            htmlTag.setAttribute('data-theme', currentTheme);
+        }
+
+        // Fungsi ketika tombol diklik
+        toggleBtn.addEventListener('click', () => {
+            // Ambil tema saat ini
+            const theme = htmlTag.getAttribute('data-theme');
+
+            if (theme === 'dark') {
+                // Jika sedang dark, ubah ke light (hapus atribut)
+                htmlTag.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            } else {
+                // Jika sedang light, ubah ke dark
+                htmlTag.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
+
 </body>
+
 </html>
