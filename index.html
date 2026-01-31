@@ -1002,83 +1002,88 @@
 
         /* --- CSS BARU UNTUK HAMBURGER MENU --- */
 
-/* 1. Tampilan Desktop: Menu berbaris ke samping */
-.nav-menu {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
+        /* 1. Tampilan Desktop: Menu berbaris ke samping */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
 
-.hamburger {
-    display: none; /* Sembunyikan ikon garis tiga di Laptop */
-    cursor: pointer;
-}
+        .hamburger {
+            display: none;
+            /* Sembunyikan ikon garis tiga di Laptop */
+            cursor: pointer;
+        }
 
-.bar {
-    display: block;
-    width: 25px;
-    height: 3px;
-    margin: 5px auto;
-    transition: all 0.3s ease-in-out;
-    background-color: white; /* Warna garis menu */
-}
+        .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            transition: all 0.3s ease-in-out;
+            background-color: white;
+            /* Warna garis menu */
+        }
 
-/* 2. Tampilan HP (Mobile) */
-@media (max-width: 768px) {
-    /* Munculkan tombol Hamburger */
-    .hamburger {
-        display: block;
-    }
+        /* 2. Tampilan HP (Mobile) */
+        @media (max-width: 768px) {
 
-    /* Ubah menu jadi vertikal dan sembunyikan di kiri layar */
-    .nav-menu {
-        position: fixed;
-        left: -100%;
-        top: 70px; /* Sesuaikan dengan tinggi navbar */
-        gap: 0;
-        flex-direction: column;
-        background-color: #0f172a; /* Warna background menu saat dibuka */
-        width: 100%;
-        text-align: center;
-        transition: 0.3s;
-        padding: 20px 0;
-        box-shadow: 0 10px 15px rgba(0,0,0,0.1);
-    }
+            /* Munculkan tombol Hamburger */
+            .hamburger {
+                display: block;
+            }
 
-    /* Kelas .active ini nanti dipicu oleh JavaScript agar menu muncul */
-    .nav-menu.active {
-        left: 0;
-    }
+            /* Ubah menu jadi vertikal dan sembunyikan di kiri layar */
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                /* Sesuaikan dengan tinggi navbar */
+                gap: 0;
+                flex-direction: column;
+                background-color: #0f172a;
+                /* Warna background menu saat dibuka */
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 20px 0;
+                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            }
 
-    .nav-links {
-        flex-direction: column;
-        width: 100%;
-        margin-bottom: 20px;
-    }
+            /* Kelas .active ini nanti dipicu oleh JavaScript agar menu muncul */
+            .nav-menu.active {
+                left: 0;
+            }
 
-    .nav-links li {
-        margin: 15px 0;
-    }
-    
-    /* Animasi ikon Hamburger menjadi X (Silang) */
-    .hamburger.active .bar:nth-child(2) {
-        opacity: 0;
-    }
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+                margin-bottom: 20px;
+            }
 
-    .hamburger.active .bar:nth-child(1) {
-        transform: translateY(8px) rotate(45deg);
-    }
+            .nav-links li {
+                margin: 15px 0;
+            }
 
-    .hamburger.active .bar:nth-child(3) {
-        transform: translateY(-8px) rotate(-45deg);
-    }
-}
+            /* Animasi ikon Hamburger menjadi X (Silang) */
+            .hamburger.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+
+            .hamburger.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+        }
     </style>
 </head>
 
 <body>
 
-<nav>
+    <nav>
         <div class="container nav-container">
             <div class="logo">
                 <img src="https://cdn-icons-png.flaticon.com/512/619/619153.png" alt="Logo Maldif Home">
@@ -1086,10 +1091,7 @@
             </div>
 
             <div class="nav-right">
-                <button id="theme-toggle" class="theme-btn" aria-label="Ganti Mode Tema">
-                    <span class="sun-icon">☀️</span>
-                    <span class="moon-icon">🌙</span>
-                </button>
+
 
                 <div class="hamburger" id="hamburger-btn">
                     <span class="bar"></span>
@@ -1105,8 +1107,11 @@
                         <li><a href="#facilities" class="nav-link">Fasilitas</a></li>
                         <li><a href="#contact" class="nav-link">Kontak</a></li>
                     </ul>
-                    <a href="https://wa.me/6282285513028?text=Halo%20Kak..." 
-                       class="btn-nav-wa" target="_blank">
+                    <button id="theme-toggle" class="theme-btn" aria-label="Ganti Mode Tema">
+                        <span class="sun-icon">☀️</span>
+                        <span class="moon-icon">🌙</span>
+                    </button>
+                    <a href="https://wa.me/6282285513028?text=Halo%20Kak..." class="btn-nav-wa" target="_blank">
                         Hubungi Kami
                     </a>
                 </div>
@@ -1432,6 +1437,24 @@
                 localStorage.setItem('theme', 'dark');
             }
         });
+
+        // --- SKRIP HAMBURGER MENU ---
+        const hamburger = document.getElementById('hamburger-btn');
+        const navMenu = document.getElementById('nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            // 1. Ubah bentuk ikon hamburger (jadi silang)
+            hamburger.classList.toggle('active');
+
+            // 2. Munculkan/Sembunyikan menu
+            navMenu.classList.toggle('active');
+        });
+
+        // Fitur Tambahan: Tutup menu otomatis saat salah satu link diklik
+        document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+        }));
     </script>
 
 </body>
