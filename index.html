@@ -999,6 +999,85 @@
                 0 0 8px rgba(255, 255, 255, 0.6),
                 0 0 15px var(--accent-color);
         }
+
+        /* --- CSS BARU UNTUK HAMBURGER MENU --- */
+
+        /* 1. Tampilan Desktop: Menu berbaris ke samping */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .hamburger {
+            display: none;
+            /* Sembunyikan ikon garis tiga di Laptop */
+            cursor: pointer;
+        }
+
+        .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            transition: all 0.3s ease-in-out;
+            background-color: white;
+            /* Warna garis menu */
+        }
+
+        /* 2. Tampilan HP (Mobile) */
+        @media (max-width: 768px) {
+
+            /* Munculkan tombol Hamburger */
+            .hamburger {
+                display: block;
+            }
+
+            /* Ubah menu jadi vertikal dan sembunyikan di kiri layar */
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                /* Sesuaikan dengan tinggi navbar */
+                gap: 0;
+                flex-direction: column;
+                background-color: #0f172a;
+                /* Warna background menu saat dibuka */
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 20px 0;
+                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Kelas .active ini nanti dipicu oleh JavaScript agar menu muncul */
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .nav-links li {
+                margin: 15px 0;
+            }
+
+            /* Animasi ikon Hamburger menjadi X (Silang) */
+            .hamburger.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+
+            .hamburger.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+        }
     </style>
 </head>
 
@@ -1012,23 +1091,33 @@
             </div>
 
             <div class="nav-right">
-                <ul class="nav-links">
-                    <li><a href="#home">Beranda</a></li>
-                    <li><a href="#about">Tentang</a></li>
-                    <li><a href="#rooms">Tipe Kamar</a></li>
-                    <li><a href="#facilities">Fasilitas</a></li>
-                    <li><a href="#contact">Kontak</a></li>
-                </ul>
-                <button id="theme-toggle" class="theme-btn" aria-label="Ganti Mode Tema">
-                    <span class="sun-icon">☀️</span>
-                    <span class="moon-icon">🌙</span>
-                </button>
-                <a href="https://wa.me/6282285513028?text=Halo%20Kak.%20Saya%20Mau%20Tanya%20Seputar%20Kos%20Maldif%20dong?"
-                    class="btn-nav-wa" target="_blank">
-                    Hubungi Kami
-                </a>
+
+
+                <div class="hamburger" id="hamburger-btn">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+
+                <div class="nav-menu" id="nav-menu">
+                    <ul class="nav-links">
+                        <li><a href="#home" class="nav-link">Beranda</a></li>
+                        <li><a href="#about" class="nav-link">Tentang</a></li>
+                        <li><a href="#rooms" class="nav-link">Tipe Kamar</a></li>
+                        <li><a href="#facilities" class="nav-link">Fasilitas</a></li>
+                        <li><a href="#contact" class="nav-link">Kontak</a></li>
+                    </ul>
+                    <div class="nav-right">
+                        <button id="theme-toggle" class="theme-btn" aria-label="Ganti Mode Tema">
+                            <span class="sun-icon">☀️</span>
+                            <span class="moon-icon">🌙</span>
+                        </button>
+                        <a href="https://wa.me/6282285513028?text=Halo%20Kak..." class="btn-nav-wa" target="_blank">
+                            Hubungi Kami
+                        </a>
+                    </div>
+                </div>
             </div>
-        </div>
     </nav>
 
     <header class="hero" id="home">
