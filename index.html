@@ -1123,6 +1123,38 @@
                 transform: translateY(-8px) rotate(-45deg);
             }
         }
+
+        /* --- PENGATURAN KHUSUS DESKTOP (LAPTOP/PC) --- */
+        @media (min-width: 769px) {
+            .nav-right {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                /* Jarak antara tombol tema dan tombol hubungi kami */
+            }
+
+            /* Kita tukar urutannya menggunakan properti 'order' */
+
+            .nav-menu {
+                order: 1;
+                /* Menu (Link + Hubungi Kami) tampil duluan */
+                display: flex;
+                /* Pastikan tetap berjejer ke samping */
+                align-items: center;
+            }
+
+            .theme-btn {
+                order: 2;
+                /* Tombol tema pindah ke posisi kedua (paling kanan) */
+                margin-right: 0;
+                /* Reset margin jika ada */
+            }
+
+            .hamburger {
+                display: none;
+                /* Pastikan hamburger sembunyi di desktop */
+            }
+        }
     </style>
 </head>
 
