@@ -1130,29 +1130,43 @@
                 display: flex;
                 align-items: center;
                 gap: 15px;
-                /* Jarak antara tombol tema dan tombol hubungi kami */
             }
 
-            /* Kita tukar urutannya menggunakan properti 'order' */
-
+            /* TRIK RAHASIA: 'display: contents' membuat wadah .nav-menu "menghilang" 
+           secara visual, sehingga Link dan Tombol WA dianggap sejajar 
+           dengan Tombol Dark Mode.
+        */
             .nav-menu {
-                order: 1;
-                /* Menu (Link + Hubungi Kami) tampil duluan */
-                display: flex;
-                /* Pastikan tetap berjejer ke samping */
-                align-items: center;
+                display: contents;
             }
 
+            /* Sekarang kita atur urutannya satu per satu */
+
+            /* Urutan 1: Link Navigasi (Paling Kiri) */
+            .nav-links {
+                order: 1;
+                display: flex;
+                gap: 20px;
+            }
+
+            /* Urutan 2: Tombol Dark Mode (Di Tengah) */
             .theme-btn {
                 order: 2;
-                /* Tombol tema pindah ke posisi kedua (paling kanan) */
-                margin-right: 0;
-                /* Reset margin jika ada */
+                margin: 0;
+            }
+
+            /* Urutan 3: Tombol Hubungi Kami (Paling Kanan) */
+            .btn-nav-wa {
+                order: 3;
+                width: auto;
+                /* Reset lebar agar tidak full width */
+                margin: 0;
+                padding: 8px 24px;
             }
 
             .hamburger {
                 display: none;
-                /* Pastikan hamburger sembunyi di desktop */
+                /* Sembunyikan hamburger */
             }
         }
     </style>
