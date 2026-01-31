@@ -774,8 +774,53 @@
         }
 
         @media (max-width: 768px) {
+
+            /* 1. Reset container link agar bisa ditata vertikal */
             .nav-links {
-                display: none;
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            /* 2. Gaya untuk setiap Item Menu */
+            .nav-links li {
+                width: 100%;
+                margin: 0;
+                /* Reset margin default */
+            }
+
+            .nav-link {
+                display: block;
+                padding: 15px 20px;
+                font-size: 1.1rem;
+                color: #ffffff !important;
+                /* Pastikan teks putih */
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                /* Garis pemisah tipis */
+                transition: background 0.3s;
+            }
+
+            .nav-link:hover {
+                background-color: rgba(255, 255, 255, 0.05);
+                /* Efek saat disentuh */
+                padding-left: 30px;
+                /* Efek geser sedikit */
+            }
+
+            /* 3. Gaya Tombol WA di dalam Menu */
+            .btn-nav-wa {
+                display: block;
+                /* Agar bisa diatur width-nya */
+                width: 80%;
+                /* Jangan terlalu lebar */
+                margin: 25px auto;
+                /* Tengah secara horizontal */
+                text-align: center;
+                padding: 12px;
+                background-color: var(--success);
+                /* Menggunakan variabel warna hijau */
             }
 
             .rooms-grid {
